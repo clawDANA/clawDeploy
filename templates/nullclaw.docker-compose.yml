@@ -1,17 +1,16 @@
 services:
-  nullclaw:
+  nullclaw_${APP_NAME}:
     build:
-      context: .
-      dockerfile: Dockerfile
+      context: ../../
+      dockerfile: clawDeploy/deploy_${APP_NAME}/Dockerfile
     container_name: ${APP_NAME}
     ports:
       - "${PORT}:3000"
-    environment:
-      - NULLCLAW_API_KEY=${API_KEY}
-      - OPENCLAW_GATEWAY_TOKEN=${API_KEY}
+    env_file:
+      - .env
     volumes:
-      - nullclaw_data:/nullclaw-data
+      - ${APP_NAME}_data:/nullclaw-data
     restart: unless-stopped
 
 volumes:
-  nullclaw_data:
+  ${APP_NAME}_data:

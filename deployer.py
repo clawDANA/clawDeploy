@@ -3,7 +3,7 @@ import shutil
 import argparse
 import sys
 
-def setup_deploy(app_name, region, api_key, deploy_type, target, port):
+def setup_deploy(app_name, region, api_key, deploy_type, target, port, tg_token, model):
     template_dir = "templates"
     work_dir = f"deploy_{app_name}"
     
@@ -67,6 +67,14 @@ def setup_deploy(app_name, region, api_key, deploy_type, target, port):
             with open(os.path.join(work_dir, "docker-compose.yml"), "w") as f:
                 f.write(content)
 
+            # Create .env file
+            with open(os.path.join(work_dir, ".env"), "w") as f:
+                f.write(f"NULLCLAW_API_KEY={api_key}\n")
+                if tg_token:
+                    f.write(f"TELEGRAM_BOT_TOKEN={tg_token}\n")
+                if model:
+                    f.write(f"NULLCLAW_MODEL={model}\n")
+
             # Create Docker run script
             with open(os.path.join(work_dir, "run.sh"), "w") as f:
                 f.write("#!/bin/bash\n")
@@ -86,6 +94,8 @@ if __name__ == "__main__":
     parser.add_argument("--type", choices=["openclaw", "nullclaw"], default="nullclaw", help="Deployment type")
     parser.add_argument("--target", choices=["fly", "docker"], default="fly", help="Deployment target")
     parser.add_argument("--port", type=int, default=3000, help="Local port for Docker")
+    parser.add_argument("--tg-token", default="", help="Telegram Bot Token (Optional)")
+    parser.add_argument("--model", default="liquid/lfm-2.5-1.2b-instruct:free", help="AI Model to use")
 
     args = parser.parse_args()
-    setup_deploy(args.name, args.region, args.key, args.type, args.target, args.port)
+    setup_deploy(args.name, args.region, args.key, args.type, args.target, args.port, args.tg_token, args.model)
