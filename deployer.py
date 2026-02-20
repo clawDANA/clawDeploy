@@ -64,6 +64,19 @@ def setup_deploy(app_name, region, api_key, deploy_type, target, port, tg_token,
             content = content.replace('${API_KEY}', api_key)
             content = content.replace('${PORT}', str(port))
 
+            # Handle Side-loading of skills
+            skills_volume = ""
+            if os.path.exists("skills_library"):
+                # Create local skills dir for this bot if it doesn't exist
+                bot_skills_dir = os.path.join(work_dir, "skills")
+                if not os.path.exists(bot_skills_dir):
+                    os.makedirs(bot_skills_dir)
+                
+                skills_volume = f"      - ./skills:/nullclaw-data/workspace/skills"
+                print(f"[*] Side-loading enabled: ./{bot_skills_dir} will be mounted to bot's skills folder")
+            
+            content = content.replace('    volumes:', f'    volumes:\n{skills_volume}' if skills_volume else '    volumes:')
+
             with open(os.path.join(work_dir, "docker-compose.yml"), "w") as f:
                 f.write(content)
 
