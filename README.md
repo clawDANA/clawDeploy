@@ -1,8 +1,38 @@
 # clawDeploy
 
-Managed “one big button” deployment for **NullClaw (nullclawd)** / OpenClaw.
+Managed “one big button” deployment for **NullClaw (nullclawd)** and **OpenClaw** agents.
 
-This repo is evolving from a Fly.io template generator into a **managed VPS deployer**: a script that spins up a new bot instance on *our* server with minimal user input.
+`clawDeploy` is not just a hosting script; it's the foundation for a **Fleet of Specialized Agents**. While classic AI frameworks focus on heavy, general-purpose assistants, we focus on ultra-light, task-specific "digital scalpel" agents built with **Zig** and **Privacy-First** architecture.
+
+## The Vision: Generalist vs. Specialist
+
+The "Generalist" approach (Classic OpenClaw/Node.js) is great for versatility but expensive to host (~1GB+ RAM). 
+
+The "Specialist" approach (NullClaw/Zig) allows:
+- **Efficiency:** Run 30+ specialized agents on a single $5 VPS.
+- **Speed:** Instant startup (<2ms) and sub-millisecond overhead.
+- **Task-Specific Muscles:** Easily add native tools for high-performance system tasks, blockchain RPC, or custom API management.
+
+## Key Features & Security
+
+### 🔐 Zero-Knowledge Privacy (SQLCipher)
+We utilize **SQLCipher** for AES-256 at-rest encryption of the agent's memory database. When deployed via `clawDeploy`, the infrastructure provider cannot read user chats or secrets without the client-provided master passphrase.
+
+### 📦 Side-loading Skills
+Support for mounting specialized skill bundles via Docker volumes. Update your agent's cognitive abilities on the fly without rebuilding containers or losing state.
+
+### 🛠 Native Zig Tools
+Extend the agent's capabilities by writing high-performance tools directly in Zig, compiled into the core binary for maximum security and speed.
+
+---
+
+## Deployment Modes
+
+Currently, `clawDeploy` supports two primary targets:
+1. **Fly.io:** Serverless-style deployment with auto-stop/auto-start.
+2. **Local Docker:** Host-managed deployment for maximum control and data sovereignty.
+
+---
 
 ## MVP target (what we’re building now)
 
