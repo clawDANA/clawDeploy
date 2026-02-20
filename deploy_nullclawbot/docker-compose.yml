@@ -1,0 +1,16 @@
+services:
+  nullclaw:
+    build:
+      context: ../../
+      dockerfile: clawDeploy/deploy_nullclawbot/Dockerfile
+    container_name: nullclawbot
+    ports:
+      - "8080:3000"
+    env_file:
+      - ../.env
+    volumes:
+      - nullclaw_data:/nullclaw-data
+    restart: unless-stopped
+
+volumes:
+  nullclaw_data:
